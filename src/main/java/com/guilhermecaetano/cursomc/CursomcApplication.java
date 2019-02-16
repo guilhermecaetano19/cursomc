@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.guilhermecaetano.cursomc.domain.Categoria;
 import com.guilhermecaetano.cursomc.domain.Cidade;
+import com.guilhermecaetano.cursomc.domain.Cliente;
+import com.guilhermecaetano.cursomc.domain.Endereco;
 import com.guilhermecaetano.cursomc.domain.Estado;
 import com.guilhermecaetano.cursomc.domain.Produto;
+import com.guilhermecaetano.cursomc.enums.TipoCliente;
 import com.guilhermecaetano.cursomc.repositories.CategoriaRepository;
 import com.guilhermecaetano.cursomc.repositories.CidadeRepository;
+import com.guilhermecaetano.cursomc.repositories.ClienteRepository;
+import com.guilhermecaetano.cursomc.repositories.EnderecoRepository;
 import com.guilhermecaetano.cursomc.repositories.EstadoRepository;
 import com.guilhermecaetano.cursomc.repositories.ProdutoRepository;
 
@@ -27,6 +32,10 @@ public class CursomcApplication implements CommandLineRunner {
 	private CidadeRepository cidadeRepository;
 	@Autowired
 	private EstadoRepository estadoRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -64,6 +73,18 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "78912345620", TipoCliente.PESSOAFISICA);
+		
+		cli1.getTelefones().addAll(Arrays.asList("6235817851", "62992408870"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Ap. 303", "Jardim", "74470530", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "84480630", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 		
 		
 	}
